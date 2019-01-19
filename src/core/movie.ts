@@ -2,6 +2,7 @@ export class Movie {
     constructor(
         readonly title: string,
         readonly description: string,
+        readonly id: number,
         private readonly durationInMinutes: number
     ) {}
 

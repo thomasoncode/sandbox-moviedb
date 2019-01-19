@@ -1,14 +1,28 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
-import React, { Component } from 'react';
+import * as React from 'react';
+import { Provider } from 'react-redux';
+import { applyMiddleware, createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
+import { rootReducer } from './ducks';
 import { Movie } from './Movie';
 
-export class App extends Component {
+const composeEnhancers = composeWithDevTools({
+    name: 'sandbox-moviedb'
+});
+
+const store = createStore(
+    rootReducer,
+    composeEnhancers(applyMiddleware(thunk))
+);
+
+export class App extends React.Component {
     public render() {
         return (
-            <React.Fragment>
+            <Provider store={store}>
                 <CssBaseline />
                 <Movie />
-            </React.Fragment>
+            </Provider>
         );
     }
 }

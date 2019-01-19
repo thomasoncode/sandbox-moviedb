@@ -3,53 +3,70 @@ import {
     Theme,
     Typography,
     withStyles,
-    WithStyles,
+    WithStyles
 } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import * as React from 'react';
-import { MovieMapper } from './core/movie-mapper';
+import { connect } from 'react-redux';
+import { Action } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
+import { AppState } from './ducks';
+import { getMovieByMovieId } from './ducks/movie';
 
-const styles = ({ palette, spacing }: Theme) =>
+const styles = ({ spacing }: Theme) =>
     createStyles({
         root: {
             flexGrow: 1,
-        },
+            margin: spacing.unit * 2
+        }
     });
 
-interface MovieState {
+interface IStateProps {
     title: string;
     description: string;
+    duration: string;
 }
 
-class Component extends React.Component<WithStyles<typeof styles>, MovieState> {
-    public readonly state: Readonly<MovieState> = {
-        description: '',
-        title: '',
-    };
+interface IDispatchProps {
+    getMovieByMovieId: (movieId: number) => void;
+}
 
+type MovieProps = IStateProps & IDispatchProps;
+
+interface IMovieProps {
+    title: string;
+    description: string;
+    duration: string;
+}
+
+class MovieBase extends React.Component<
+    WithStyles<typeof styles> & MovieProps
+> {
+    public static defaultProps = {
+        description: '',
+        duration: '',
+        title: ''
+    };
     public async componentDidMount() {
-        const movieMapper = new MovieMapper();
-        const movie = await movieMapper.getMovieById(284053);
-        this.setState({
-            description: movie.description,
-            title: movie.title,
-        });
+        this.props.getMovieByMovieId(284053);
     }
     public render() {
-        const { classes } = this.props;
+        const { classes, title, description, duration } = this.props;
 
         return (
             <div className={classes.root}>
                 <Grid container spacing={24}>
                     <Grid item xs>
                         <Typography variant='h1' gutterBottom>
-                            {this.state.title}
+                            {title}
                         </Typography>
                     </Grid>
                     <Grid item xs='auto'>
                         <Typography variant='body1' gutterBottom>
-                            {this.state.description}
+                            {description}
+                        </Typography>
+                        <Typography variant='body1' gutterBottom>
+                            {duration}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -58,4 +75,33 @@ class Component extends React.Component<WithStyles<typeof styles>, MovieState> {
     }
 }
 
-export const Movie = withStyles(styles)(Component);
+const mapDispatchToProps = (
+    dispatch: ThunkDispatch<AppState, null, Action<string>>
+): IDispatchProps => ({
+    getMovieByMovieId: (movieId: number) => dispatch(getMovieByMovieId(movieId))
+});
+
+const mapStateToProps = ({ movies }: AppState): IStateProps => {
+    const keys = Object.keys(movies);
+    if (keys.length) {
+        const firstKey = keys[0];
+        const movie = movies[firstKey];
+
+        return {
+            description: movie.description,
+            duration: movie.duration,
+            title: movie.title
+        };
+    }
+
+    return {
+        description: '',
+        duration: '',
+        title: ''
+    };
+};
+
+export const Movie = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withStyles(styles)(MovieBase));
