@@ -13,14 +13,6 @@ import { ThunkDispatch } from 'redux-thunk';
 import { AppState } from './ducks';
 import { getMovieByMovieId } from './ducks/movie';
 
-const styles = ({ spacing }: Theme) =>
-    createStyles({
-        root: {
-            flexGrow: 1,
-            margin: spacing.unit * 2
-        }
-    });
-
 interface IStateProps {
     title: string;
     description: string;
@@ -33,28 +25,20 @@ interface IDispatchProps {
 
 type MovieProps = IStateProps & IDispatchProps;
 
-interface IMovieProps {
-    title: string;
-    description: string;
-    duration: string;
-}
-
-class MovieBase extends React.Component<
-    WithStyles<typeof styles> & MovieProps
-> {
+class MovieBase extends React.Component<MovieProps> {
     public static defaultProps = {
         description: '',
         duration: '',
         title: ''
     };
     public async componentDidMount() {
-        this.props.getMovieByMovieId(284053);
+        // this.props.getMovieByMovieId(284053);
     }
     public render() {
-        const { classes, title, description, duration } = this.props;
+        const { title, description, duration } = this.props;
 
         return (
-            <div className={classes.root}>
+            <div>
                 <Grid container spacing={24}>
                     <Grid item xs>
                         <Typography variant='h1' gutterBottom>
@@ -104,4 +88,4 @@ const mapStateToProps = ({ movies }: AppState): IStateProps => {
 export const Movie = connect(
     mapStateToProps,
     mapDispatchToProps
-)(withStyles(styles)(MovieBase));
+)(MovieBase);

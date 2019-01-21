@@ -1,3 +1,10 @@
+import {
+    createStyles,
+    Grid,
+    Theme,
+    WithStyles,
+    withStyles
+} from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import * as React from 'react';
 import { Provider } from 'react-redux';
@@ -6,6 +13,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import { rootReducer } from './ducks';
 import { Movie } from './Movie';
+import { MovieList } from './MovieList';
 
 const composeEnhancers = composeWithDevTools({
     name: 'sandbox-moviedb'
@@ -16,13 +24,33 @@ const store = createStore(
     composeEnhancers(applyMiddleware(thunk))
 );
 
-export class App extends React.Component {
+const styles = ({ spacing }: Theme) =>
+    createStyles({
+        root: {
+            margin: spacing.unit * 2
+        }
+    });
+
+class AppBase extends React.Component<WithStyles<typeof styles>> {
     public render() {
         return (
             <Provider store={store}>
                 <CssBaseline />
-                <Movie />
+                <Grid
+                    container
+                    className={this.props.classes.root}
+                    spacing={16}
+                >
+                    <Grid item xs={2}>
+                        <MovieList />
+                    </Grid>
+                    <Grid item xs>
+                        <Movie />
+                    </Grid>
+                </Grid>
             </Provider>
         );
     }
 }
+
+export const App = withStyles(styles)(AppBase);
