@@ -1,5 +1,5 @@
 import { IMovieOverviewLookup, MovieOverview } from './movie-overview';
-import { ITmdbList } from './tmdb-list-item';
+import { ITmdbList } from './tmdb-list';
 
 export class MovieOverviewService {
     public async getMovieOverviewByListId(
@@ -9,7 +9,9 @@ export class MovieOverviewService {
         const list: ITmdbList = await response.json();
 
         return list.items
-            .map(item => new MovieOverview(item.id, item.title))
+            .map(
+                item => new MovieOverview(item.id, item.title, item.poster_path)
+            )
             .reduce((lookup: IMovieOverviewLookup, movieOverview) => {
                 lookup[movieOverview.id] = movieOverview;
                 return lookup;

@@ -41,7 +41,7 @@ class AppBase extends React.Component<WithStyles<typeof styles>> {
                     className={this.props.classes.root}
                     spacing={16}
                 >
-                    <Grid item xs={2}>
+                    <Grid item xs={3}>
                         <MovieList />
                     </Grid>
                     <Grid item xs>
