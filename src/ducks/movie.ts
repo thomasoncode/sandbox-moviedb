@@ -1,8 +1,7 @@
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { AppState } from '.';
-import { Movie } from '../core/movie';
-import { MovieService } from '../core/movie-service';
+import { Movie, MovieService } from '../core/movie';
 
 // STATE
 export interface IMovieState {

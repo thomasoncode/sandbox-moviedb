@@ -1,5 +1,5 @@
+import { ITmdbMovie } from '../tmdb/tmdb-movie';
 import { Movie } from './movie';
-import { ITmdbMovie } from './tmdb-movie';
 
 export class MovieService {
     public async getMovieById(id: number): Promise<Movie> {
