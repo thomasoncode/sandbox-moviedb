@@ -8,10 +8,10 @@ import { connect } from 'react-redux';
 import { Action } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { AppState } from './ducks';
-import { getMovieOverviewByListId } from './ducks/movie-overview';
+import { getMoviesByListId } from './ducks/movies';
 
 interface IDispatchProps {
-    getMovieOverviewByListId: (listId: number) => void;
+    getMoviesByListId: (listId: number) => void;
 }
 
 interface IMovieProp {
@@ -28,7 +28,7 @@ type Props = IDispatchProps & IStateProps;
 
 class MovieListBase extends React.Component<Props> {
     public async componentDidMount() {
-        this.props.getMovieOverviewByListId(1);
+        this.props.getMoviesByListId(1);
     }
     public render() {
         return (
@@ -61,13 +61,12 @@ class MovieListBase extends React.Component<Props> {
 const mapDispatchToProps = (
     dispatch: ThunkDispatch<AppState, null, Action<string>>
 ): IDispatchProps => ({
-    getMovieOverviewByListId: (listId: number) =>
-        dispatch(getMovieOverviewByListId(listId))
+    getMoviesByListId: (listId: number) => dispatch(getMoviesByListId(listId))
 });
 
 const mapStateToProps = (state: AppState): IStateProps => {
-    const ids = Object.keys(state.movieOverviews).map(id => parseInt(id, 10));
-    const movieOverviews = ids.map(id => state.movieOverviews[id]);
+    const ids = Object.keys(state.movies).map(id => parseInt(id, 10));
+    const movieOverviews = ids.map(id => state.movies[id]);
 
     return {
         movies: movieOverviews.map(movieOverview => ({

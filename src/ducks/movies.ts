@@ -1,10 +1,20 @@
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { AppState } from '.';
-import { MovieCollection, MoviesService } from '../core/movies';
+import { MoviesService } from '../core/movies';
 
 // STATE
-const initialState: MovieCollection = {};
+interface IMovie {
+    readonly id: number;
+    readonly title: string;
+    readonly posterUrl: string;
+}
+
+interface IMoviesState {
+    [key: string]: IMovie;
+}
+
+const initialState: IMoviesState = {};
 
 // ACTIONS
 export const GET_MOVIE_OVERVIEW_REQUEST =
@@ -21,7 +31,7 @@ interface IGetMovieOverviewRequest {
 
 interface IGetMovieOverviewSuccess {
     type: typeof GET_MOVIE_OVERVIEW_SUCCESS;
-    payload: MovieCollection;
+    payload: IMoviesState;
 }
 
 interface IGetMovieOverviewFailure {
@@ -42,7 +52,7 @@ const getMovieOverviewRequest = (): IGetMovieOverviewRequest => ({
 });
 
 const getMovieOverviewSuccess = (
-    movies: MovieCollection
+    movies: IMoviesState
 ): IGetMovieOverviewSuccess => ({
     payload: movies,
     type: GET_MOVIE_OVERVIEW_SUCCESS
@@ -55,10 +65,10 @@ const getMovieOverviewFailure = (error: Error): IGetMovieOverviewFailure => ({
 });
 
 // REDUCER
-export const movieOverviews = (
+export const moviesReducer = (
     state = initialState,
     action: MovieOverviewType
-): MovieCollection => {
+): IMoviesState => {
     switch (action.type) {
         case GET_MOVIE_OVERVIEW_SUCCESS:
             return {
@@ -72,14 +82,14 @@ export const movieOverviews = (
 };
 
 // THUNKS
-export const getMovieOverviewByListId = (
+export const getMoviesByListId = (
     movieId: number
 ): ThunkAction<void, AppState, null, Action<string>> => async dispatch => {
     try {
         dispatch(getMovieOverviewRequest());
 
         const movieService = new MoviesService();
-        const movies = await movieService.getMovieOverviewByListId(movieId);
+        const movies = await movieService.getMoviesByListId(movieId);
 
         dispatch(getMovieOverviewSuccess(movies));
     } catch (error) {

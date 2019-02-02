@@ -4,11 +4,17 @@ import { AppState } from '.';
 import { Movie, MovieService } from '../core/movie';
 
 // STATE
-export interface IMovieState {
-    [key: string]: Movie;
+interface IMovieState {
+    description: string;
+    duration: string;
+    title: string;
 }
 
-const initialState: IMovieState = {};
+const initialState: IMovieState = {
+    description: '',
+    duration: '',
+    title: ''
+};
 
 // ACTIONS
 export const GET_MOVIE_REQUEST = 'moviedb/movie/GET_MOVIE_REQUEST';
@@ -58,15 +64,17 @@ const getMovieFailure = (error: Error): IGetMovieFailure => ({
 });
 
 // REDUCER
-export const movies = (
+export const movieReducer = (
     state = initialState,
     action: MovieTypes
 ): IMovieState => {
     switch (action.type) {
         case GET_MOVIE_SUCCESS:
+            const { payload } = action;
             return {
-                ...state,
-                [action.payload.id]: action.payload
+                description: payload.description,
+                duration: payload.duration,
+                title: payload.title
             };
         case GET_MOVIE_REQUEST:
         default:

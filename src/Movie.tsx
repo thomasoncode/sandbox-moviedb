@@ -65,23 +65,11 @@ const mapDispatchToProps = (
     getMovieByMovieId: (movieId: number) => dispatch(getMovieByMovieId(movieId))
 });
 
-const mapStateToProps = ({ movies }: AppState): IStateProps => {
-    const keys = Object.keys(movies);
-    if (keys.length) {
-        const firstKey = keys[0];
-        const movie = movies[firstKey];
-
-        return {
-            description: movie.description,
-            duration: movie.duration,
-            title: movie.title
-        };
-    }
-
+const mapStateToProps = ({ movie }: AppState): IStateProps => {
     return {
-        description: '',
-        duration: '',
-        title: ''
+        description: movie.description,
+        duration: movie.duration,
+        title: movie.title
     };
 };
 

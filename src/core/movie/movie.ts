@@ -7,6 +7,10 @@ export class Movie {
     ) {}
 
     get duration(): string {
+        if (this.durationInMinutes === null) {
+            return '';
+        }
+
         const minutes = this.durationInMinutes % 60;
         const hours = (this.durationInMinutes - minutes) / 60;
         return `${hours}h ${minutes}m`;
