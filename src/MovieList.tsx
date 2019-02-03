@@ -35,7 +35,7 @@ class MovieListBase extends React.Component<Props> {
         return (
             <List>
                 {this.props.movies.map(movie => (
-                    <ListItem key={movie.id} button>
+                    <ListItem key={movie.id} divider disableGutters button>
                         <ListItemText primary={movie.title} />
                     </ListItem>
                 ))}

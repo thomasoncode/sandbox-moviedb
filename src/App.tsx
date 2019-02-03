@@ -1,7 +1,10 @@
 import {
+    AppBar,
     createStyles,
     Grid,
     Theme,
+    Toolbar,
+    Typography,
     WithStyles,
     withStyles
 } from '@material-ui/core';
@@ -36,6 +39,13 @@ class AppBase extends React.Component<WithStyles<typeof styles>> {
         return (
             <Provider store={store}>
                 <CssBaseline />
+                <AppBar>
+                    <Toolbar>
+                        <Typography color='inherit' variant='h6'>
+                            The Marvel Universe
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
                 <Grid
                     container
                     className={this.props.classes.root}
