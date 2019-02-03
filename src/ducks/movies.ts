@@ -7,7 +7,6 @@ import { MoviesService } from '../core/movies';
 interface IMovie {
     readonly id: number;
     readonly title: string;
-    readonly posterUrl: string;
 }
 
 interface IMoviesState {

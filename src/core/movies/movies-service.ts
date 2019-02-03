@@ -11,7 +11,7 @@ export class MoviesService {
         const list: ITmdbList = await response.json();
 
         return list.items
-            .map(item => new Movie(item.id, item.title, item.poster_path))
+            .map(item => new Movie(item.id, item.title))
             .reduce((lookup: IMovieCollection, movieOverview) => {
                 lookup[movieOverview.id] = movieOverview;
                 return lookup;

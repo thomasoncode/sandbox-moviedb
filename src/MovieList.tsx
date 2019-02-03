@@ -1,8 +1,10 @@
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import IconButton from '@material-ui/core/IconButton';
-import InfoOutlined from '@material-ui/icons/InfoOutlined';
+import {
+    Avatar,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText
+} from '@material-ui/core';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Action } from 'redux';
@@ -17,7 +19,6 @@ interface IDispatchProps {
 interface IMovieProp {
     title: string;
     id: number;
-    posterUrl: string;
 }
 
 interface IStateProps {
@@ -32,28 +33,13 @@ class MovieListBase extends React.Component<Props> {
     }
     public render() {
         return (
-            <GridList cols={1} cellHeight={138}>
+            <List>
                 {this.props.movies.map(movie => (
-                    <GridListTile key={movie.id}>
-                        <img
-                            src={`https://image.tmdb.org/t/p/w500${
-                                movie.posterUrl
-                            }`}
-                            height='auto'
-                            width='200px'
-                            alt={movie.title}
-                        />
-                        <GridListTileBar
-                            title={movie.title}
-                            actionIcon={
-                                <IconButton>
-                                    <InfoOutlined />
-                                </IconButton>
-                            }
-                        />
-                    </GridListTile>
+                    <ListItem key={movie.id} button>
+                        <ListItemText primary={movie.title} />
+                    </ListItem>
                 ))}
-            </GridList>
+            </List>
         );
     }
 }
@@ -66,14 +52,24 @@ const mapDispatchToProps = (
 
 const mapStateToProps = (state: AppState): IStateProps => {
     const ids = Object.keys(state.movies).map(id => parseInt(id, 10));
-    const movieOverviews = ids.map(id => state.movies[id]);
+    const movies = ids
+        .map(id => state.movies[id])
+        .map(movie => ({
+            id: movie.id,
+            title: movie.title
+        }))
+        .sort((a, b) => {
+            if (a.title < b.title) {
+                return -1;
+            }
+            if (a.title > b.title) {
+                return 1;
+            }
+            return 0;
+        });
 
     return {
-        movies: movieOverviews.map(movieOverview => ({
-            id: movieOverview.id,
-            posterUrl: movieOverview.posterUrl,
-            title: movieOverview.title
-        }))
+        movies
     };
 };
 
