@@ -21,13 +21,6 @@ export const GET_MOVIE_REQUEST = 'moviedb/movie/GET_MOVIE_REQUEST';
 export const GET_MOVIE_SUCCESS = 'moviedb/movie/GET_MOVIE_SUCCESS';
 export const GET_MOVIE_FAILURE = 'moviedb/movie/GET_MOVIE_FAILURE';
 
-export const GET_MOVIE_OVERVIEW_REQUEST =
-    'moviedb/movie/GET_MOVIE_OVERVIEW_REQUEST';
-export const GET_MOVIE_OVERVIEW_SUCCESS =
-    'moviedb/movie/GET_MOVIE_OVERVIEW_SUCCESS';
-export const GET_MOVIE_OVERVIEW_FAILURE =
-    'moviedb/movie/GET_MOVIE_OVERVIEW_FAILURE';
-
 interface IGetMovieRequest {
     type: typeof GET_MOVIE_REQUEST;
     payload: {};

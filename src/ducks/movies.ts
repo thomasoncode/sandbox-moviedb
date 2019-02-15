@@ -16,51 +16,46 @@ interface IMoviesState {
 const initialState: IMoviesState = {};
 
 // ACTIONS
-export const GET_MOVIE_OVERVIEW_REQUEST =
-    'moviedb/movie/GET_MOVIE_OVERVIEW_REQUEST';
-export const GET_MOVIE_OVERVIEW_SUCCESS =
-    'moviedb/movie/GET_MOVIE_OVERVIEW_SUCCESS';
-export const GET_MOVIE_OVERVIEW_FAILURE =
-    'moviedb/movie/GET_MOVIE_OVERVIEW_FAILURE';
+export const GET_MOVIES_REQUEST = 'moviedb/movie/GET_MOVIES_REQUEST';
+export const GET_MOVIES_SUCCESS = 'moviedb/movie/GET_MOVIES_SUCCESS';
+export const GET_MOVIES_FAILURE = 'moviedb/movie/GET_MOVIES_FAILURE';
 
-interface IGetMovieOverviewRequest {
-    type: typeof GET_MOVIE_OVERVIEW_REQUEST;
+interface IGetMoviesSuccess {
+    type: typeof GET_MOVIES_SUCCESS;
     payload: {};
 }
 
-interface IGetMovieOverviewSuccess {
-    type: typeof GET_MOVIE_OVERVIEW_SUCCESS;
+interface IGetMoviesRequest {
+    type: typeof GET_MOVIES_REQUEST;
     payload: IMoviesState;
 }
 
-interface IGetMovieOverviewFailure {
-    type: typeof GET_MOVIE_OVERVIEW_FAILURE;
+interface IGetMoviesFailure {
+    type: typeof GET_MOVIES_FAILURE;
     payload: Error;
     error: true;
 }
 
 type MovieOverviewType =
-    | IGetMovieOverviewRequest
-    | IGetMovieOverviewSuccess
-    | IGetMovieOverviewFailure;
+    | IGetMoviesSuccess
+    | IGetMoviesRequest
+    | IGetMoviesFailure;
 
 // ACTION CREATORS
-const getMovieOverviewRequest = (): IGetMovieOverviewRequest => ({
+const getMoviesRequest = (): IGetMoviesSuccess => ({
     payload: {},
-    type: GET_MOVIE_OVERVIEW_REQUEST
+    type: GET_MOVIES_SUCCESS
 });
 
-const getMovieOverviewSuccess = (
-    movies: IMoviesState
-): IGetMovieOverviewSuccess => ({
+const getMoviesSuccess = (movies: IMoviesState): IGetMoviesSuccess => ({
     payload: movies,
-    type: GET_MOVIE_OVERVIEW_SUCCESS
+    type: GET_MOVIES_SUCCESS
 });
 
-const getMovieOverviewFailure = (error: Error): IGetMovieOverviewFailure => ({
+const getMoviesFailure = (error: Error): IGetMoviesFailure => ({
     error: true,
     payload: error,
-    type: GET_MOVIE_OVERVIEW_FAILURE
+    type: GET_MOVIES_FAILURE
 });
 
 // REDUCER
@@ -69,12 +64,12 @@ export const moviesReducer = (
     action: MovieOverviewType
 ): IMoviesState => {
     switch (action.type) {
-        case GET_MOVIE_OVERVIEW_SUCCESS:
+        case GET_MOVIES_SUCCESS:
             return {
                 ...state,
                 ...action.payload
             };
-        case GET_MOVIE_OVERVIEW_REQUEST:
+        case GET_MOVIES_REQUEST:
         default:
             return state;
     }
@@ -85,13 +80,13 @@ export const getMoviesByListId = (
     movieId: number
 ): ThunkAction<void, AppState, null, Action<string>> => async dispatch => {
     try {
-        dispatch(getMovieOverviewRequest());
+        dispatch(getMoviesRequest());
 
         const movieService = new MoviesService();
         const movies = await movieService.getMoviesByListId(movieId);
 
-        dispatch(getMovieOverviewSuccess(movies));
+        dispatch(getMoviesSuccess(movies));
     } catch (error) {
-        dispatch(getMovieOverviewFailure(error));
+        dispatch(getMoviesFailure(error));
     }
 };
