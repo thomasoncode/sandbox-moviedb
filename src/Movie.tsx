@@ -1,10 +1,4 @@
-import {
-    createStyles,
-    Theme,
-    Typography,
-    withStyles,
-    WithStyles
-} from '@material-ui/core';
+import { Paper, Typography, withStyles, WithStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -12,6 +6,12 @@ import { Action } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { AppState } from './ducks';
 import { getMovieByMovieId } from './ducks/movie';
+
+const styles = () => ({
+    root: {
+        flexGrow: 1
+    }
+});
 
 interface IStateProps {
     title: string;
@@ -25,7 +25,9 @@ interface IDispatchProps {
 
 type MovieProps = IStateProps & IDispatchProps;
 
-class MovieBase extends React.Component<MovieProps> {
+class MovieBase extends React.Component<
+    WithStyles<typeof styles> & MovieProps
+> {
     public static defaultProps = {
         description: '',
         duration: '',
@@ -35,17 +37,17 @@ class MovieBase extends React.Component<MovieProps> {
         // this.props.getMovieByMovieId(284053);
     }
     public render() {
-        const { title, description, duration } = this.props;
+        const { title, description, duration, classes } = this.props;
 
         return (
-            <div>
-                <Grid container spacing={24}>
-                    <Grid item xs>
-                        <Typography variant='h1' gutterBottom>
+            <div className={classes.root}>
+                <Grid container spacing={24} zeroMinWidth>
+                    <Grid item xs={12}>
+                        <Typography variant='title' gutterBottom>
                             {title}
                         </Typography>
                     </Grid>
-                    <Grid item xs='auto'>
+                    <Grid item xs>
                         <Typography variant='body1' gutterBottom>
                             {description}
                         </Typography>
@@ -73,7 +75,9 @@ const mapStateToProps = ({ movie }: AppState): IStateProps => {
     };
 };
 
-export const Movie = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(MovieBase);
+export const Movie = withStyles(styles)(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(MovieBase)
+);

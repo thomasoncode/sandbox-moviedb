@@ -1,16 +1,11 @@
-import {
-    Avatar,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText
-} from '@material-ui/core';
+import { List, ListItem, ListItemText } from '@material-ui/core';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Action } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
-import { AppState } from './ducks';
-import { getMoviesByListId } from './ducks/movies';
+import { AppState } from '../../ducks';
+import { getMoviesByListId } from '../../ducks/movies';
+import { Movie } from './Movie';
 
 interface IDispatchProps {
     getMoviesByListId: (listId: number) => void;
@@ -27,7 +22,7 @@ interface IStateProps {
 
 type Props = IDispatchProps & IStateProps;
 
-class MovieListBase extends React.Component<Props> {
+class MoviesBase extends React.Component<Props> {
     public async componentDidMount() {
         this.props.getMoviesByListId(1);
     }
@@ -35,9 +30,7 @@ class MovieListBase extends React.Component<Props> {
         return (
             <List>
                 {this.props.movies.map(movie => (
-                    <ListItem key={movie.id} divider disableGutters button>
-                        <ListItemText primary={movie.title} />
-                    </ListItem>
+                    <Movie key={movie.id} {...movie} />
                 ))}
             </List>
         );
@@ -73,7 +66,7 @@ const mapStateToProps = (state: AppState): IStateProps => {
     };
 };
 
-export const MovieList = connect(
+export const Movies = connect(
     mapStateToProps,
     mapDispatchToProps
-)(MovieListBase);
+)(MoviesBase);

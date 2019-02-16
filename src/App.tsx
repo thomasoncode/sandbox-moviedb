@@ -14,9 +14,9 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
+import { Movies } from './components/movies/Movies';
 import { rootReducer } from './ducks';
 import { Movie } from './Movie';
-import { MovieList } from './MovieList';
 
 const composeEnhancers = composeWithDevTools({
     name: 'sandbox-moviedb'
@@ -30,7 +30,7 @@ const store = createStore(
 const styles = ({ spacing }: Theme) =>
     createStyles({
         root: {
-            margin: spacing.unit * 2
+            padding: spacing.unit * 2
         }
     });
 
@@ -39,25 +39,23 @@ class AppBase extends React.Component<WithStyles<typeof styles>> {
         return (
             <Provider store={store}>
                 <CssBaseline />
-                <AppBar>
+                <AppBar position='static'>
                     <Toolbar>
                         <Typography color='inherit' variant='h6'>
                             The Marvel Universe
                         </Typography>
                     </Toolbar>
                 </AppBar>
-                <Grid
-                    container
-                    className={this.props.classes.root}
-                    spacing={16}
-                >
-                    <Grid item xs={3}>
-                        <MovieList />
+                <div className={this.props.classes.root}>
+                    <Grid container spacing={16}>
+                        <Grid item xs={3}>
+                            <Movies />
+                        </Grid>
+                        <Grid item xs>
+                            <Movie />
+                        </Grid>
                     </Grid>
-                    <Grid item xs>
-                        <Movie />
-                    </Grid>
-                </Grid>
+                </div>
             </Provider>
         );
     }

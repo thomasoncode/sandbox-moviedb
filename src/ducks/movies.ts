@@ -16,9 +16,9 @@ interface IMoviesState {
 const initialState: IMoviesState = {};
 
 // ACTIONS
-export const GET_MOVIES_REQUEST = 'moviedb/movie/GET_MOVIES_REQUEST';
-export const GET_MOVIES_SUCCESS = 'moviedb/movie/GET_MOVIES_SUCCESS';
-export const GET_MOVIES_FAILURE = 'moviedb/movie/GET_MOVIES_FAILURE';
+export const GET_MOVIES_REQUEST = 'moviedb/movies/GET_MOVIES_REQUEST';
+export const GET_MOVIES_SUCCESS = 'moviedb/movies/GET_MOVIES_SUCCESS';
+export const GET_MOVIES_FAILURE = 'moviedb/movies/GET_MOVIES_FAILURE';
 
 interface IGetMoviesSuccess {
     type: typeof GET_MOVIES_SUCCESS;
